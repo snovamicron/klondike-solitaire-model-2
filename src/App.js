@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 
 // Components
 import LandingPage from "./components/LandingPage";
 import ControlBar from "./components/ControlBar";
 import GameBoard from "./components/GameBoard";
 import ThemeToggle from "./components/ThemeToggle";
+import HintsToggle from "./components/HintsToggle";
 
 // Hooks
 import { useGameState } from "./hooks/useGameState";
@@ -13,6 +14,9 @@ import { useResponsive } from "./hooks/useResponsive";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { useTouchDrag } from "./hooks/useTouchDrag";
 import { useTheme } from "./hooks/useTheme";
+import { useCardAnimation } from "./hooks/useCardAnimation";
+import { useDropZones } from "./hooks/useDropZones";
+import { useSettings } from "./hooks/useSettings";
 
 // Utils
 import { checkWin } from "./utils/gameLogic";
@@ -20,9 +24,26 @@ import { checkWin } from "./utils/gameLogic";
 function App() {
   const [showGame, setShowGame] = useState(false);
   const [hasWon, setHasWon] = useState(false);
+  const [gameKey, setGameKey] = useState(0);
+
+  const isNewGameRef = useRef(false);
 
   // Theme hook
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
+
+  // Settings hook
+  const { showHints, toggleHints } = useSettings();
+
+  // Animation hook
+  const {
+    animatePlace,
+    animateFlip,
+    animateDraw,
+    animateFoundation,
+    startDealAnimation,
+    getAnimationProps,
+    clearAnimations,
+  } = useCardAnimation();
 
   // Custom hooks
   const { isMobile, cardOffset } = useResponsive();
@@ -30,6 +51,9 @@ function App() {
   const {
     gameState,
     history,
+    lastFlippedCard,
+    lastMovedCards,
+    lastMoveType,
     startNewGame,
     handleUndo: undoMove,
     handleStockClick,
@@ -39,46 +63,135 @@ function App() {
 
   const { selection, selectCards, clearSelection, isSelected } = useSelection();
 
+  // Drop zones hook - pass showHints
+  const { calculateValidDrops, clearValidDrops, isValidDrop } = useDropZones(
+    gameState,
+    showHints,
+  );
+
   const {
     handleDragStart,
     handleDragOver,
     handleDropOnTableau,
     handleDropOnFoundation,
     handleDragEnd,
-  } = useDragAndDrop(gameState, tryMove, selectCards, clearSelection, isMobile);
+  } = useDragAndDrop(
+    gameState,
+    tryMove,
+    selectCards,
+    clearSelection,
+    isMobile,
+    calculateValidDrops,
+    clearValidDrops,
+  );
 
   const { touchDrag, dragPosition, handleTouchStart, getDraggingCards } =
-    useTouchDrag(gameState, tryMove, selectCards, clearSelection);
+    useTouchDrag(
+      gameState,
+      tryMove,
+      selectCards,
+      clearSelection,
+      calculateValidDrops,
+      clearValidDrops,
+    );
+
+  // ============ DEAL ANIMATION ON NEW GAME ============
+
+  useEffect(() => {
+    if (isNewGameRef.current && gameState) {
+      isNewGameRef.current = false;
+
+      const dealCardIds = [];
+      gameState.tableau.forEach((pile) => {
+        pile.forEach((card) => {
+          dealCardIds.push(card.id);
+        });
+      });
+
+      startDealAnimation(dealCardIds);
+    }
+  }, [gameKey, gameState, startDealAnimation]);
+
+  // ============ MOVE ANIMATION TRIGGERS ============
+
+  useEffect(() => {
+    if (lastMovedCards.length > 0 && lastMoveType) {
+      if (lastMoveType === "foundation") {
+        animateFoundation(lastMovedCards[0]);
+      } else if (lastMoveType === "draw") {
+        animateDraw(lastMovedCards[0]);
+      } else if (lastMoveType === "place") {
+        animatePlace(lastMovedCards);
+      }
+    }
+  }, [
+    lastMovedCards,
+    lastMoveType,
+    animateFoundation,
+    animateDraw,
+    animatePlace,
+  ]);
+
+  useEffect(() => {
+    if (lastFlippedCard) {
+      animateFlip(lastFlippedCard);
+    }
+  }, [lastFlippedCard, animateFlip]);
+
+  // ============ CLEAR HINTS WHEN SETTING CHANGES ============
+
+  useEffect(() => {
+    if (!showHints) {
+      clearValidDrops();
+    }
+  }, [showHints, clearValidDrops]);
 
   // ============ GAME ACTIONS ============
 
   const handlePlay = useCallback(() => {
+    clearAnimations();
+    isNewGameRef.current = true;
     startNewGame();
+    setGameKey((prev) => prev + 1);
     setShowGame(true);
     setHasWon(false);
-  }, [startNewGame]);
+  }, [startNewGame, clearAnimations]);
 
   const handleUndo = useCallback(() => {
     undoMove();
     clearSelection();
-  }, [undoMove, clearSelection]);
+    clearValidDrops();
+  }, [undoMove, clearSelection, clearValidDrops]);
 
   const handleNewGame = useCallback(() => {
-    startNewGame();
+    clearAnimations();
     clearSelection();
+    clearValidDrops();
     setHasWon(false);
-  }, [startNewGame, clearSelection]);
+    isNewGameRef.current = true;
+    startNewGame();
+    setGameKey((prev) => prev + 1);
+  }, [startNewGame, clearSelection, clearAnimations, clearValidDrops]);
 
   const handleWasteClick = useCallback(() => {
     if (!gameState || gameState.waste.length === 0) return;
 
     if (selection?.source === "waste") {
       clearSelection();
+      clearValidDrops();
       return;
     }
 
     selectCards("waste", gameState.waste.length - 1);
-  }, [gameState, selection, selectCards, clearSelection]);
+    calculateValidDrops("waste", gameState.waste.length - 1);
+  }, [
+    gameState,
+    selection,
+    selectCards,
+    clearSelection,
+    calculateValidDrops,
+    clearValidDrops,
+  ]);
 
   const handleTableauClick = useCallback(
     (pileIndex, cardIndex) => {
@@ -86,48 +199,53 @@ function App() {
 
       const pile = gameState.tableau[pileIndex];
 
-      // Empty pile - try to move selection here
       if (pile.length === 0) {
         if (selection) {
           if (tryMove(selection, "tableau", pileIndex)) {
             clearSelection();
+            clearValidDrops();
           }
         }
         return;
       }
 
-      // Default to top card if no specific card clicked
       if (cardIndex === null) {
         cardIndex = pile.length - 1;
       }
 
       const clickedCard = pile[cardIndex];
 
-      // Can't interact with face-down cards
       if (!clickedCard.faceUp) return;
 
-      // If we have a selection
       if (selection) {
-        // Clicked same card - deselect
         if (
           selection.source === `tableau-${pileIndex}` &&
           selection.cardIndex === cardIndex
         ) {
           clearSelection();
+          clearValidDrops();
           return;
         }
 
-        // Try to move to this pile
         if (tryMove(selection, "tableau", pileIndex)) {
           clearSelection();
+          clearValidDrops();
           return;
         }
       }
 
-      // Select this card
       selectCards(`tableau-${pileIndex}`, cardIndex);
+      calculateValidDrops(`tableau-${pileIndex}`, cardIndex);
     },
-    [gameState, selection, tryMove, selectCards, clearSelection],
+    [
+      gameState,
+      selection,
+      tryMove,
+      selectCards,
+      clearSelection,
+      calculateValidDrops,
+      clearValidDrops,
+    ],
   );
 
   const handleFoundationClick = useCallback(
@@ -136,25 +254,34 @@ function App() {
 
       const foundation = gameState.foundations[foundIndex];
 
-      // If we have a selection, try to move it here
       if (selection) {
         if (tryMove(selection, "foundation", foundIndex)) {
           clearSelection();
+          clearValidDrops();
           return;
         }
       }
 
-      // Select/deselect foundation top card
       if (foundation.length > 0) {
         const source = `foundation-${foundIndex}`;
         if (selection?.source === source) {
           clearSelection();
+          clearValidDrops();
         } else {
           selectCards(source, foundation.length - 1);
+          calculateValidDrops(source, foundation.length - 1);
         }
       }
     },
-    [gameState, selection, tryMove, selectCards, clearSelection],
+    [
+      gameState,
+      selection,
+      tryMove,
+      selectCards,
+      clearSelection,
+      calculateValidDrops,
+      clearValidDrops,
+    ],
   );
 
   // ============ WIN DETECTION ============
@@ -171,21 +298,25 @@ function App() {
     const handleKeyDown = (e) => {
       if (!showGame) return;
 
-      // Ctrl+Z or Cmd+Z for undo
       if ((e.ctrlKey || e.metaKey) && e.key === "z") {
         e.preventDefault();
         handleUndo();
       }
 
-      // Escape to clear selection
       if (e.key === "Escape") {
         clearSelection();
+        clearValidDrops();
+      }
+
+      // Toggle hints with 'H' key
+      if (e.key === "h" || e.key === "H") {
+        toggleHints();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [showGame, handleUndo, clearSelection]);
+  }, [showGame, handleUndo, clearSelection, clearValidDrops, toggleHints]);
 
   // ============ RENDER ============
 
@@ -209,21 +340,22 @@ function App() {
         onRedeal={() => {
           handleRedeal();
           clearSelection();
+          clearValidDrops();
         }}
       >
-        {/* Theme Toggle in Control Bar */}
+        <HintsToggle enabled={showHints} onToggle={toggleHints} />
         <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
       </ControlBar>
 
-      {/* Instructions */}
       <div className="instructions">
         {isMobile
           ? "Tap to select, tap destination to move. Or drag cards."
-          : "Click to select, then click destination. Or drag and drop. (Ctrl+Z to undo)"}
+          : "Click to select, then click destination. Or drag and drop. (Ctrl+Z to undo, H for hints)"}
       </div>
 
       {gameState && (
         <GameBoard
+          key={gameKey}
           gameState={gameState}
           cardOffset={cardOffset}
           isMobile={isMobile}
@@ -231,10 +363,12 @@ function App() {
           touchDrag={touchDrag}
           dragPosition={dragPosition}
           draggingCards={getDraggingCards()}
-          // Handlers
+          getAnimationProps={getAnimationProps}
+          isValidDrop={isValidDrop}
           onStockClick={() => {
             handleStockClick();
             clearSelection();
+            clearValidDrops();
           }}
           onWasteClick={handleWasteClick}
           onTableauClick={handleTableauClick}
@@ -248,7 +382,6 @@ function App() {
         />
       )}
 
-      {/* Win Modal */}
       {hasWon && (
         <div className="win-overlay">
           <div className="win-modal">
@@ -261,7 +394,6 @@ function App() {
         </div>
       )}
 
-      {/* Footer */}
       <div className="footer">
         <button className="back-link" onClick={() => setShowGame(false)}>
           ← Back to Home

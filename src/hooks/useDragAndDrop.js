@@ -7,6 +7,8 @@ export const useDragAndDrop = (
   selectCards,
   clearSelection,
   isMobile,
+  calculateValidDrops,
+  clearValidDrops,
 ) => {
   const [dragData, setDragData] = useState(null);
 
@@ -23,10 +25,15 @@ export const useDragAndDrop = (
       setDragData({ source, cardIndex });
       selectCards(source, cardIndex);
 
+      // Calculate and show valid drop zones
+      if (calculateValidDrops) {
+        calculateValidDrops(source, cardIndex);
+      }
+
       e.dataTransfer.effectAllowed = "move";
       e.dataTransfer.setData("text/plain", "");
     },
-    [gameState, isMobile, selectCards],
+    [gameState, isMobile, selectCards, calculateValidDrops],
   );
 
   const handleDragOver = useCallback((e) => {
@@ -42,8 +49,12 @@ export const useDragAndDrop = (
       tryMove(dragData, "tableau", pileIndex);
       setDragData(null);
       clearSelection();
+
+      if (clearValidDrops) {
+        clearValidDrops();
+      }
     },
-    [dragData, tryMove, clearSelection],
+    [dragData, tryMove, clearSelection, clearValidDrops],
   );
 
   const handleDropOnFoundation = useCallback(
@@ -54,14 +65,22 @@ export const useDragAndDrop = (
       tryMove(dragData, "foundation", foundIndex);
       setDragData(null);
       clearSelection();
+
+      if (clearValidDrops) {
+        clearValidDrops();
+      }
     },
-    [dragData, tryMove, clearSelection],
+    [dragData, tryMove, clearSelection, clearValidDrops],
   );
 
   const handleDragEnd = useCallback(() => {
     setDragData(null);
     clearSelection();
-  }, [clearSelection]);
+
+    if (clearValidDrops) {
+      clearValidDrops();
+    }
+  }, [clearSelection, clearValidDrops]);
 
   return {
     dragData,

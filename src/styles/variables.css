@@ -39,6 +39,8 @@
   /* Selection & Feedback */
   --color-selection-glow: rgba(253, 224, 71, 0.5);
   --color-valid-drop: rgba(134, 239, 172, 0.5);
+  --color-valid-drop-border: #86efac;
+  --color-valid-drop-glow: 0 0 15px rgba(134, 239, 172, 0.6);
   --color-invalid: #f87171;
 
   /* -------- Shadows -------- */
@@ -127,9 +129,9 @@
   --color-border-dashed: rgba(148, 163, 184, 0.25);
 
   /* Selection & Feedback */
-  --color-selection-glow: rgba(56, 189, 248, 0.5);
   --color-valid-drop: rgba(52, 211, 153, 0.5);
-  --color-invalid: #f87171;
+  --color-valid-drop-border: #34d399;
+  --color-valid-drop-glow: 0 0 15px rgba(52, 211, 153, 0.6);
 
   /* -------- Shadows -------- */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);

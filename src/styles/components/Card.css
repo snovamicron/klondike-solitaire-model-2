@@ -16,6 +16,8 @@
     box-shadow var(--transition-fast);
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .card.clickable {
@@ -28,11 +30,44 @@
   box-shadow:
     var(--shadow-card-selected),
     0 0 0 3px var(--color-accent);
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* Dragging State */
 .card.dragging {
   opacity: 0.3;
+}
+
+/* -------- Animation States -------- */
+
+/* Card just placed */
+.card.animate-place {
+  animation: cardPlaceBounce 0.3s ease-out forwards;
+}
+
+/* Card flipping */
+.card.animate-flip {
+  animation: cardFlip 0.4s ease-in-out forwards;
+}
+
+/* Card drawn from stock */
+.card.animate-draw {
+  animation: cardDraw 0.25s ease-out forwards;
+}
+
+/* Card moved to foundation */
+.card.animate-foundation {
+  animation: cardToFoundation 0.35s ease-out forwards;
+}
+
+/* Card in stack being moved */
+.card.animate-stack {
+  animation: cardStackMove 0.25s ease-out forwards;
+}
+
+/* Card being dealt - backwards fill mode makes it start invisible */
+.card.animate-deal {
+  animation: cardDeal 0.3s ease-out backwards;
 }
 
 /* -------- Card Back -------- */

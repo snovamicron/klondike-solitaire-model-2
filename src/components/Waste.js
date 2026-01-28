@@ -10,6 +10,7 @@ const Waste = ({
   onDragStart,
   onDragEnd,
   onTouchStart,
+  getAnimationProps,
 }) => {
   if (waste.length === 0) {
     return (
@@ -23,6 +24,8 @@ const Waste = ({
   const topCard = waste[waste.length - 1];
   const cardIndex = waste.length - 1;
   const isDragging = touchDrag?.source === "waste" && touchDrag?.moved;
+
+  const animationProps = getAnimationProps ? getAnimationProps(topCard.id) : {};
 
   return (
     <div className="pile-container">
@@ -42,6 +45,7 @@ const Waste = ({
             card={topCard}
             selected={isSelected("waste", cardIndex)}
             isDragging={isDragging}
+            {...animationProps}
           />
         </div>
       </div>

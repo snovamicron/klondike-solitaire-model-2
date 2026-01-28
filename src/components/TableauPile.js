@@ -8,12 +8,14 @@ const TableauPile = ({
   isSelected,
   isMobile,
   touchDrag,
+  isValidDrop,
   onTableauClick,
   onDragStart,
   onDragEnd,
   onDragOver,
   onDrop,
   onTouchStart,
+  getAnimationProps,
 }) => {
   const source = `tableau-${pileIndex}`;
 
@@ -21,11 +23,15 @@ const TableauPile = ({
     onTableauClick(pileIndex, null);
   };
 
+  // Check if this is a valid drop zone
+  const validDropClass =
+    isValidDrop && isValidDrop("tableau", pileIndex) ? "valid-drop" : "";
+
   return (
     <div className="tableau-pile-container">
       <div className="pile-label">{pileIndex + 1}</div>
       <div
-        className={`tableau-pile ${pile.length === 0 ? "empty" : ""}`}
+        className={`tableau-pile ${pile.length === 0 ? "empty" : ""} ${validDropClass}`}
         data-drop-target="tableau"
         data-index={pileIndex}
         onClick={pile.length === 0 ? handleEmptyClick : undefined}
@@ -37,6 +43,10 @@ const TableauPile = ({
             touchDrag?.moved &&
             touchDrag?.source === source &&
             cardIndex >= touchDrag?.cardIndex;
+
+          const animationProps = getAnimationProps
+            ? getAnimationProps(card.id)
+            : {};
 
           return (
             <div
@@ -68,6 +78,7 @@ const TableauPile = ({
                 card={card}
                 selected={isSelected(source, cardIndex)}
                 clickable={card.faceUp}
+                {...animationProps}
               />
             </div>
           );

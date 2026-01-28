@@ -21,6 +21,7 @@
 @import "./components/DragGhost.css";
 @import "./components/WinModal.css";
 @import "./components/ThemeToggle.css";
+@import "./components/HintsToggle.css";
 
 /* 5. Responsive Overrides (must be last) */
 @import "./responsive.css";

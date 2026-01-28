@@ -2,15 +2,34 @@ import React, { memo } from "react";
 import { SUIT_SYMBOLS, RANK_DISPLAY, RED_SUITS } from "../utils/constants";
 
 const Card = memo(
-  ({ card, selected = false, clickable = true, isDragging = false }) => {
+  ({
+    card,
+    selected = false,
+    clickable = true,
+    isDragging = false,
+    animationType = null,
+    animationDelay = 0,
+  }) => {
     if (!card) return null;
 
     const { suit, rank, faceUp } = card;
 
+    // Build class names
+    const animationClass = animationType ? `animate-${animationType}` : "";
+
+    // Build style - only add delay if there's an animation
+    const style =
+      animationType && animationDelay > 0
+        ? { animationDelay: `${animationDelay}ms` }
+        : undefined;
+
     // Face-down card
     if (!faceUp) {
       return (
-        <div className={`card card-back ${isDragging ? "dragging" : ""}`}>
+        <div
+          className={`card card-back ${isDragging ? "dragging" : ""} ${animationClass}`}
+          style={style}
+        >
           <div className="card-back-pattern">
             <div className="pattern-inner"></div>
           </div>
@@ -27,7 +46,8 @@ const Card = memo(
       <div
         className={`card card-face ${colorClass} ${selected ? "selected" : ""} ${
           clickable ? "clickable" : ""
-        } ${isDragging ? "dragging" : ""}`}
+        } ${isDragging ? "dragging" : ""} ${animationClass}`}
+        style={style}
         role="button"
         aria-label={`${rankDisplay} of ${suit}`}
       >

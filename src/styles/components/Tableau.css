@@ -27,6 +27,7 @@
   flex: 1;
   position: relative;
   border-radius: var(--card-radius);
+  transition: all var(--transition-normal);
 }
 
 /* Empty Tableau Pile */
@@ -41,6 +42,38 @@
 .tableau-pile.empty:active {
   background: rgba(0, 0, 0, 0.25);
   border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* -------- Drop Zone Highlight -------- */
+
+.tableau-pile.valid-drop {
+  background: var(--color-valid-drop);
+  border-radius: var(--card-radius);
+}
+
+.tableau-pile.empty.valid-drop {
+  border: 2px solid var(--color-valid-drop-border) !important;
+  background: var(--color-valid-drop) !important;
+  box-shadow: var(--color-valid-drop-glow);
+  animation: glowPulse 1s ease-in-out infinite;
+}
+
+/* Highlight overlay for non-empty tableau piles */
+.tableau-pile.valid-drop::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(
+    to top,
+    var(--color-valid-drop) 0%,
+    transparent 100%
+  );
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+  pointer-events: none;
+  z-index: 50;
 }
 
 /* Tableau Card Wrapper */

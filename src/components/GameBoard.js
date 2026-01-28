@@ -13,6 +13,8 @@ const GameBoard = ({
   touchDrag,
   dragPosition,
   draggingCards,
+  getAnimationProps,
+  isValidDrop,
   // Handlers
   onStockClick,
   onWasteClick,
@@ -45,6 +47,7 @@ const GameBoard = ({
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onTouchStart={onTouchStart}
+          getAnimationProps={getAnimationProps}
         />
 
         <div className="spacer"></div>
@@ -54,12 +57,14 @@ const GameBoard = ({
           isSelected={isSelected}
           isMobile={isMobile}
           touchDrag={touchDrag}
+          isValidDrop={isValidDrop}
           onFoundationClick={onFoundationClick}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
           onDropOnFoundation={onDropOnFoundation}
           onTouchStart={onTouchStart}
+          getAnimationProps={getAnimationProps}
         />
       </div>
 
@@ -70,12 +75,14 @@ const GameBoard = ({
         isSelected={isSelected}
         isMobile={isMobile}
         touchDrag={touchDrag}
+        isValidDrop={isValidDrop}
         onTableauClick={onTableauClick}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
         onDropOnTableau={onDropOnTableau}
         onTouchStart={onTouchStart}
+        getAnimationProps={getAnimationProps}
       />
 
       {/* Touch Drag Ghost */}

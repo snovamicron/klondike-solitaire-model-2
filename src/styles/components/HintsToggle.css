@@ -1,0 +1,81 @@
+/* ============================================
+   HINTS TOGGLE BUTTON
+   ============================================ */
+
+.hints-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-button-bg, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hints-toggle:hover {
+  background: var(--color-button-bg-hover, rgba(255, 255, 255, 0.2));
+}
+
+.hints-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Enabled State */
+.hints-toggle.enabled {
+  background: rgba(134, 239, 172, 0.2);
+  border-color: var(--color-valid-drop-border, #86efac);
+}
+
+.hints-toggle.enabled:hover {
+  background: rgba(134, 239, 172, 0.3);
+}
+
+/* Disabled State */
+.hints-toggle.disabled {
+  opacity: 0.7;
+}
+
+.hints-toggle.disabled:hover {
+  opacity: 1;
+}
+
+/* Icon */
+.hints-toggle-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Label */
+.hints-toggle-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Mobile adjustments */
+@media (max-width: 550px) {
+  .hints-toggle {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .hints-toggle-label {
+    display: none;
+  }
+
+  .hints-toggle-icon {
+    font-size: 1.1rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .hints-toggle {
+    padding: var(--spacing-xs);
+    min-width: 36px;
+    justify-content: center;
+  }
+}

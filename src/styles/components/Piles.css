@@ -44,6 +44,25 @@
   border-color: var(--color-text-muted);
 }
 
+/* -------- Drop Zone Highlight -------- */
+
+.pile.valid-drop {
+  border: 2px solid var(--color-valid-drop-border) !important;
+  background: var(--color-valid-drop) !important;
+  box-shadow: var(--color-valid-drop-glow);
+  animation: glowPulse 1s ease-in-out infinite;
+}
+
+.pile.valid-drop::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: calc(var(--card-radius) + 4px);
+  border: 2px solid var(--color-valid-drop-border);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* -------- Stock Pile -------- */
 .stock-pile {
   position: relative;
@@ -67,6 +86,12 @@
 /* -------- Foundation Pile -------- */
 .foundation-pile {
   /* Specific foundation styles */
+}
+
+.foundation-pile.valid-drop {
+  border-color: var(--color-accent) !important;
+  background: rgba(253, 224, 71, 0.2) !important;
+  box-shadow: 0 0 15px rgba(253, 224, 71, 0.5);
 }
 
 /* -------- Waste Pile -------- */

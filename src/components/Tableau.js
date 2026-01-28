@@ -7,12 +7,14 @@ const Tableau = ({
   isSelected,
   isMobile,
   touchDrag,
+  isValidDrop,
   onTableauClick,
   onDragStart,
   onDragEnd,
   onDragOver,
   onDropOnTableau,
   onTouchStart,
+  getAnimationProps,
 }) => {
   return (
     <div className="tableau-row">
@@ -25,12 +27,14 @@ const Tableau = ({
           isSelected={isSelected}
           isMobile={isMobile}
           touchDrag={touchDrag}
+          isValidDrop={isValidDrop}
           onTableauClick={onTableauClick}
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
           onDrop={onDropOnTableau}
           onTouchStart={onTouchStart}
+          getAnimationProps={getAnimationProps}
         />
       ))}
     </div>

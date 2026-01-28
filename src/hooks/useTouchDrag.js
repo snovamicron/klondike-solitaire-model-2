@@ -6,6 +6,8 @@ export const useTouchDrag = (
   tryMove,
   selectCards,
   clearSelection,
+  calculateValidDrops,
+  clearValidDrops,
 ) => {
   const [touchDrag, setTouchDrag] = useState(null);
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
@@ -54,8 +56,13 @@ export const useTouchDrag = (
 
       setDragPosition({ x: touch.clientX, y: touch.clientY });
       selectCards(source, cardIndex);
+
+      // Calculate valid drop zones
+      if (calculateValidDrops) {
+        calculateValidDrops(source, cardIndex);
+      }
     },
-    [gameState, selectCards],
+    [gameState, selectCards, calculateValidDrops],
   );
 
   const handleTouchMove = useCallback(
@@ -93,6 +100,9 @@ export const useTouchDrag = (
           if (moveSuccess) {
             setTouchDrag(null);
             clearSelection();
+            if (clearValidDrops) {
+              clearValidDrops();
+            }
             return;
           }
         }
@@ -100,8 +110,11 @@ export const useTouchDrag = (
 
       setTouchDrag(null);
       clearSelection();
+      if (clearValidDrops) {
+        clearValidDrops();
+      }
     },
-    [touchDrag, findDropTarget, tryMove, clearSelection],
+    [touchDrag, findDropTarget, tryMove, clearSelection, clearValidDrops],
   );
 
   // Global touch event listeners
@@ -130,7 +143,7 @@ export const useTouchDrag = (
     };
   }, [touchDrag, handleTouchMove, handleTouchEnd]);
 
-  // Get cards being dragged (for ghost)
+  // Get cards being dragged
   const getDraggingCards = useCallback(() => {
     if (!touchDrag || !gameState) return [];
     return getCardsFromSource(touchDrag.source, touchDrag.cardIndex, gameState);

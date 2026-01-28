@@ -8,12 +8,14 @@ const Foundation = ({
   isSelected,
   isMobile,
   touchDrag,
+  isValidDrop,
   onClick,
   onDragStart,
   onDragEnd,
   onDragOver,
   onDrop,
   onTouchStart,
+  getAnimationProps,
 }) => {
   const topCard =
     foundation.length > 0 ? foundation[foundation.length - 1] : null;
@@ -21,11 +23,18 @@ const Foundation = ({
   const source = `foundation-${index}`;
   const isDragging = touchDrag?.source === source && touchDrag?.moved;
 
+  const animationProps =
+    topCard && getAnimationProps ? getAnimationProps(topCard.id) : {};
+
+  // Check if this is a valid drop zone
+  const validDropClass =
+    isValidDrop && isValidDrop("foundation", index) ? "valid-drop" : "";
+
   return (
     <div className="pile-container">
       <div className="pile-label">{FOUNDATION_SYMBOLS[index]}</div>
       <div
-        className={`pile foundation-pile ${foundation.length === 0 ? "empty" : ""}`}
+        className={`pile foundation-pile ${foundation.length === 0 ? "empty" : ""} ${validDropClass}`}
         data-drop-target="foundation"
         data-index={index}
         onClick={() => onClick(index)}
@@ -47,6 +56,7 @@ const Foundation = ({
               card={topCard}
               selected={isSelected(source, cardIndex)}
               isDragging={isDragging}
+              {...animationProps}
             />
           </div>
         )}
