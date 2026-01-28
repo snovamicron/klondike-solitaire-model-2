@@ -1,6 +1,13 @@
 import React from "react";
 
-const ControlBar = ({ canUndo, canRedeal, onUndo, onNewGame, onRedeal }) => {
+const ControlBar = ({
+  canUndo,
+  canRedeal,
+  onUndo,
+  onNewGame,
+  onRedeal,
+  children,
+}) => {
   return (
     <div className="control-bar">
       <h2>Klondike Solitaire</h2>
@@ -18,6 +25,7 @@ const ControlBar = ({ canUndo, canRedeal, onUndo, onNewGame, onRedeal }) => {
         >
           ♻ Redeal
         </button>
+        {children}
       </div>
     </div>
   );

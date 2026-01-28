@@ -1,0 +1,26 @@
+/* ============================================
+   MAIN STYLESHEET ENTRY POINT
+   ============================================ */
+
+/* 1. Variables (CSS Custom Properties) */
+@import "./variables.css";
+
+/* 2. Base/Reset Styles */
+@import "./base.css";
+
+/* 3. Animations */
+@import "./animations.css";
+
+/* 4. Component Styles */
+@import "./components/LandingPage.css";
+@import "./components/ControlBar.css";
+@import "./components/Card.css";
+@import "./components/Piles.css";
+@import "./components/Tableau.css";
+@import "./components/GameBoard.css";
+@import "./components/DragGhost.css";
+@import "./components/WinModal.css";
+@import "./components/ThemeToggle.css";
+
+/* 5. Responsive Overrides (must be last) */
+@import "./responsive.css";

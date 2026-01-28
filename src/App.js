@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import LandingPage from "./components/LandingPage";
 import ControlBar from "./components/ControlBar";
 import GameBoard from "./components/GameBoard";
+import ThemeToggle from "./components/ThemeToggle";
 
 // Hooks
 import { useGameState } from "./hooks/useGameState";
@@ -11,6 +12,7 @@ import { useSelection } from "./hooks/useSelection";
 import { useResponsive } from "./hooks/useResponsive";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { useTouchDrag } from "./hooks/useTouchDrag";
+import { useTheme } from "./hooks/useTheme";
 
 // Utils
 import { checkWin } from "./utils/gameLogic";
@@ -18,6 +20,9 @@ import { checkWin } from "./utils/gameLogic";
 function App() {
   const [showGame, setShowGame] = useState(false);
   const [hasWon, setHasWon] = useState(false);
+
+  // Theme hook
+  const { theme, toggleTheme, isDark } = useTheme();
 
   // Custom hooks
   const { isMobile, cardOffset } = useResponsive();
@@ -185,7 +190,13 @@ function App() {
   // ============ RENDER ============
 
   if (!showGame) {
-    return <LandingPage onPlay={handlePlay} />;
+    return (
+      <LandingPage
+        onPlay={handlePlay}
+        isDark={isDark}
+        onThemeToggle={toggleTheme}
+      />
+    );
   }
 
   return (
@@ -199,7 +210,10 @@ function App() {
           handleRedeal();
           clearSelection();
         }}
-      />
+      >
+        {/* Theme Toggle in Control Bar */}
+        <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
+      </ControlBar>
 
       {/* Instructions */}
       <div className="instructions">

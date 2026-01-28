@@ -1,0 +1,64 @@
+/* ============================================
+   TABLEAU STYLES
+   ============================================ */
+
+/* Tableau Row Container */
+.tableau-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Single Tableau Pile Container */
+.tableau-pile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+/* Tableau Pile */
+.tableau-pile {
+  width: var(--card-width);
+  min-height: var(--card-height);
+  flex: 1;
+  position: relative;
+  border-radius: var(--card-radius);
+}
+
+/* Empty Tableau Pile */
+.tableau-pile.empty {
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px dashed var(--color-border-dashed);
+  flex: 0;
+  height: var(--card-height);
+}
+
+.tableau-pile.empty:hover,
+.tableau-pile.empty:active {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Tableau Card Wrapper */
+.tableau-card-wrapper {
+  position: absolute;
+  left: 0;
+  width: var(--card-width);
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    opacity 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tableau-card-wrapper:hover .card.clickable {
+  transform: translateY(-3px);
+}
+
+.tableau-card-wrapper.selected-wrapper {
+  z-index: var(--z-card-selected) !important;
+}

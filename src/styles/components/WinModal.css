@@ -1,0 +1,67 @@
+/* ============================================
+   WIN MODAL
+   ============================================ */
+
+.win-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg-overlay-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.win-modal {
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 100%
+  );
+  border: 3px solid var(--color-accent);
+  border-radius: var(--radius-xl);
+  padding: 40px 60px;
+  text-align: center;
+  box-shadow: var(--shadow-modal);
+  animation: bounceIn 0.5s ease-out;
+}
+
+.win-modal h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.win-modal p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+/* Stats in Win Modal */
+.win-stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.win-stat {
+  text-align: center;
+}
+
+.win-stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+.win-stat-label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+}

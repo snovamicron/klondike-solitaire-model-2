@@ -1,0 +1,300 @@
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* -------- Large Screens (min-height: 800px) -------- */
+@media (min-height: 800px) {
+  :root {
+    --card-width: 85px;
+    --card-height: 119px;
+    --card-pattern-width: 67px;
+    --card-pattern-height: 101px;
+    --font-size-rank: 18px;
+    --font-size-suit: 16px;
+    --font-size-center: 36px;
+  }
+
+  .control-bar h2 {
+    font-size: 1.5rem;
+  }
+
+  .control-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .instructions {
+    font-size: 0.95rem;
+    padding: 8px 15px;
+  }
+}
+
+/* -------- Short Screens (max-height: 700px) -------- */
+@media (max-height: 700px) {
+  :root {
+    --card-width: 65px;
+    --card-height: 91px;
+    --card-pattern-width: 51px;
+    --card-pattern-height: 77px;
+    --font-size-rank: 14px;
+    --font-size-suit: 12px;
+    --font-size-center: 26px;
+  }
+
+  .control-bar {
+    padding: 6px 15px;
+    margin-bottom: 6px;
+  }
+
+  .control-bar h2 {
+    font-size: 1.2rem;
+  }
+
+  .control-button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .instructions {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    margin-bottom: 6px;
+  }
+
+  .top-row {
+    margin-bottom: 10px;
+  }
+
+  .top-left {
+    top: 4px;
+    left: 5px;
+  }
+
+  .bottom-right {
+    bottom: 4px;
+    right: 5px;
+  }
+
+  .pile-label {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+  }
+
+  .footer {
+    padding: 5px 0;
+  }
+
+  .back-link {
+    padding: 5px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* -------- Very Short Screens (max-height: 600px) -------- */
+@media (max-height: 600px) {
+  :root {
+    --card-width: 55px;
+    --card-height: 77px;
+    --card-pattern-width: 43px;
+    --card-pattern-height: 63px;
+    --font-size-rank: 12px;
+    --font-size-suit: 10px;
+    --font-size-center: 20px;
+  }
+
+  .app {
+    padding: 5px 10px;
+  }
+
+  .control-bar {
+    padding: 5px 12px;
+    margin-bottom: 4px;
+  }
+
+  .control-bar h2 {
+    font-size: 1rem;
+  }
+
+  .control-button {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .instructions {
+    display: none;
+  }
+
+  .top-row {
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+
+  .spacer {
+    width: 15px;
+  }
+
+  .tableau-row {
+    gap: 6px;
+  }
+
+  .pile-label {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
+/* -------- Tablet/Mobile Width (max-width: 700px) -------- */
+@media (max-width: 700px) {
+  :root {
+    --card-width: 60px;
+    --card-height: 84px;
+    --card-pattern-width: 46px;
+    --card-pattern-height: 68px;
+    --font-size-rank: 13px;
+    --font-size-suit: 11px;
+    --font-size-center: 24px;
+  }
+
+  .control-bar {
+    justify-content: center;
+  }
+
+  .control-bar h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .top-row {
+    gap: 6px;
+  }
+
+  .tableau-row {
+    gap: 5px;
+  }
+
+  .spacer {
+    width: 12px;
+  }
+}
+
+/* -------- Mobile Phones (max-width: 550px) -------- */
+@media (max-width: 550px) {
+  :root {
+    --card-width: 46px;
+    --card-height: 64px;
+    --card-pattern-width: 34px;
+    --card-pattern-height: 50px;
+    --font-size-rank: 10px;
+    --font-size-suit: 8px;
+    --font-size-center: 18px;
+  }
+
+  .app {
+    padding: 8px;
+  }
+
+  .control-bar {
+    padding: 6px 10px;
+  }
+
+  .control-bar h2 {
+    font-size: 1.1rem;
+  }
+
+  .control-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .top-left {
+    top: 3px;
+    left: 4px;
+  }
+
+  .bottom-right {
+    bottom: 3px;
+    right: 4px;
+  }
+
+  .top-row {
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .tableau-row {
+    gap: 3px;
+  }
+
+  .spacer {
+    width: 8px;
+  }
+
+  .redeal-icon {
+    font-size: 1.5rem;
+  }
+
+  .stock-count {
+    font-size: 0.65rem;
+    bottom: -14px;
+  }
+
+  /* Landing Page Mobile */
+  .landing h1 {
+    font-size: 2rem;
+  }
+
+  .landing p {
+    font-size: 1rem;
+  }
+
+  .play-button {
+    padding: 12px 35px;
+    font-size: 1.1rem;
+  }
+
+  .landing-card {
+    width: 50px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  /* Win Modal Mobile */
+  .win-modal {
+    padding: 30px 40px;
+    margin: 20px;
+  }
+
+  .win-modal h2 {
+    font-size: 1.8rem;
+  }
+
+  .win-modal p {
+    font-size: 1rem;
+  }
+}
+
+/* -------- Very Small Phones (max-width: 380px) -------- */
+@media (max-width: 380px) {
+  :root {
+    --card-width: 40px;
+    --card-height: 56px;
+    --card-pattern-width: 28px;
+    --card-pattern-height: 42px;
+    --font-size-rank: 9px;
+    --font-size-suit: 7px;
+    --font-size-center: 14px;
+  }
+
+  .control-bar h2 {
+    font-size: 0.95rem;
+  }
+
+  .control-button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+}

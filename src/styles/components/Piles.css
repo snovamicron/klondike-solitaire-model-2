@@ -1,0 +1,80 @@
+/* ============================================
+   PILE STYLES (Stock, Waste, Foundation)
+   ============================================ */
+
+/* Pile Container */
+.pile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Pile Label */
+.pile-label {
+  font-size: 0.7rem;
+  margin-bottom: var(--spacing-xs);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Base Pile */
+.pile {
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: var(--card-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-normal);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Empty Pile State */
+.pile.empty {
+  background: var(--color-bg-overlay);
+  border: 2px dashed var(--color-border-light);
+}
+
+.pile.empty:hover,
+.pile.empty:active {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: var(--color-text-muted);
+}
+
+/* -------- Stock Pile -------- */
+.stock-pile {
+  position: relative;
+}
+
+.stock-count {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.redeal-icon {
+  font-size: 2.2rem;
+  opacity: 0.5;
+  color: var(--color-text-primary);
+}
+
+/* -------- Foundation Pile -------- */
+.foundation-pile {
+  /* Specific foundation styles */
+}
+
+/* -------- Waste Pile -------- */
+.waste-pile {
+  /* Specific waste styles */
+}
+
+/* Spacer (between waste and foundations) */
+.spacer {
+  width: 25px;
+}

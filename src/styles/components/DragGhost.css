@@ -1,0 +1,14 @@
+/* ============================================
+   DRAG GHOST (Touch Drag Overlay)
+   ============================================ */
+
+.drag-ghost {
+  opacity: 0.9;
+  transform: rotate(3deg);
+  pointer-events: none;
+  z-index: var(--z-drag-ghost);
+}
+
+.drag-ghost .card {
+  box-shadow: var(--shadow-card-drag);
+}

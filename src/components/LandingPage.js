@@ -1,8 +1,14 @@
 import React from "react";
+import ThemeToggle from "./ThemeToggle";
 
-const LandingPage = ({ onPlay }) => {
+const LandingPage = ({ onPlay, isDark, onThemeToggle }) => {
   return (
     <div className="landing">
+      {/* Theme Toggle on Landing Page */}
+      <div className="landing-theme-toggle">
+        <ThemeToggle isDark={isDark} onToggle={onThemeToggle} />
+      </div>
+
       <div className="landing-content">
         <div className="landing-cards">
           <div className="landing-card card-1">♠</div>

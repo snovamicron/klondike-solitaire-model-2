@@ -1,0 +1,126 @@
+/* ============================================
+   CARD COMPONENT
+   ============================================ */
+
+/* Base Card */
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: var(--card-radius);
+  background: var(--color-card-white);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  user-select: none;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.card.clickable {
+  cursor: pointer;
+}
+
+/* Selected State */
+.card.selected {
+  transform: translateY(-8px) !important;
+  box-shadow:
+    var(--shadow-card-selected),
+    0 0 0 3px var(--color-accent);
+}
+
+/* Dragging State */
+.card.dragging {
+  opacity: 0.3;
+}
+
+/* -------- Card Back -------- */
+.card-back {
+  background: linear-gradient(
+    135deg,
+    var(--color-card-back) 0%,
+    var(--color-card-back-dark) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card-back-pattern {
+  width: var(--card-pattern-width);
+  height: var(--card-pattern-height);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      rgba(255, 255, 255, 0.1) 5px,
+      rgba(255, 255, 255, 0.1) 10px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 5px,
+      rgba(255, 255, 255, 0.1) 5px,
+      rgba(255, 255, 255, 0.1) 10px
+    );
+}
+
+/* -------- Card Face -------- */
+.card-face {
+  background: var(--color-card-white);
+  padding: var(--spacing-xs);
+}
+
+.card-face.red {
+  color: var(--color-suit-red);
+}
+
+.card-face.black {
+  color: var(--color-suit-black);
+}
+
+/* Card Corners */
+.card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.top-left {
+  top: 5px;
+  left: 6px;
+}
+
+.bottom-right {
+  bottom: 5px;
+  right: 6px;
+  transform: rotate(180deg);
+}
+
+.card-rank {
+  font-size: var(--font-size-rank);
+  font-weight: bold;
+}
+
+.card-suit {
+  font-size: var(--font-size-suit);
+}
+
+/* Card Center */
+.card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-suit {
+  font-size: var(--font-size-center);
+}
